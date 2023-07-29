@@ -60,10 +60,12 @@ This will download the video from the given URL and extract the segment between 
 ## Get help
 
 ```bash
-./script.sh -h
+./youtube_clip_edit.sh -h
 ```
 
 ## Notes
+
+
 
 The script automatically checks if `yt-dlp` and `ffmpeg` are installed and will prompt you to install any missing packages.
 
