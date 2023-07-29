@@ -52,7 +52,7 @@ choco install yt-dlp ffmpeg
 Download a clip from a YouTube video:
 
 ```bash
-./script.sh -u "https://www.youtube.com/watch?v=your_video_id" -s "00:02:30" -e "00:03:45" -o "output_clip.mp4"
+bash youtube_clip_edit.sh -u "https://www.youtube.com/watch?v=your_video_id" -s "00:02:30" -e "00:03:45" -o "output_clip.mp4"
 ```
 
 This will download the video from the given URL and extract the segment between 2 minutes 30 seconds and 3 minutes 45 seconds and save it as output_clip.mp4.

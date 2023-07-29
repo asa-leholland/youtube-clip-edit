@@ -249,6 +249,19 @@ if ! confirm_command; then
     exit 0
 fi
 
+if [ -f "$OUTPUT_FILENAME" ]; then
+    read -r -p "The output file '$OUTPUT_FILENAME' already exists. Do you want to delete it and continue? (y/n): " response
+    case "$response" in
+        [yY][eE][sS] | [yY])
+            rm "$OUTPUT_FILENAME"
+            ;;
+        *)
+            echo "Video processing canceled by user."
+            rm "temp_video.mp4"
+            exit 0
+            ;;
+    esac
+fi
 
 # Validate time format
 if ! [[ $START_TIME =~ ^[0-9]{2}:[0-9]{2}:[0-9]{2}$ ]] || ! [[ $END_TIME =~ ^[0-9]{2}:[0-9]{2}:[0-9]{2}$ ]]; then
@@ -263,7 +276,7 @@ if ! yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o "temp_video.mp4" "
 fi
 
 # Step 2: Extract the clip using ffmpeg
-if ! ffmpeg -i "temp_video.mp4" -ss "$START_TIME" -to "$END_TIME" -c:v copy -c:a copy "$OUTPUT_FILENAME"; then
+if ! ffmpeg -i "temp_video.mp4" -ss "$START_TIME" -to "$END_TIME" -vf "scale=-2:480" -c:v libx264 -preset ultrafast -crf 23 -c:a aac "$OUTPUT_FILENAME"; then
     echo "Error: Failed to extract the clip. Please check the start and end times."
     rm "temp_video.mp4"
     exit 1
